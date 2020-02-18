@@ -1,23 +1,40 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from "react";
+import styled from "styled-components";
+import Logo from "./Logo";
+import Header from "./Header";
+import "./App.css";
+
+const StyledLogo = styled(Logo)`
+  width: 100px;
+  height: 150px;
+  opacity: ${props => props.opacity};
+  transition: all 1s ease-in;
+`;
 
 function App() {
+  const [isOver, setIsOver] = useState(false);
+
+  useEffect(() => {
+    window.addEventListener("scroll", listenScrollEvent);
+    return () => {
+      window.removeEventListener("scroll", listenScrollEvent);
+    };
+  });
+
+  function listenScrollEvent() {
+    if (window.pageYOffset > 500) {
+      setIsOver(true);
+    } else {
+      setIsOver(false);
+    }
+  }
+
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <Header>
+          <StyledLogo opacity={isOver ? 0 : 1} />
+        </Header>
       </header>
     </div>
   );
